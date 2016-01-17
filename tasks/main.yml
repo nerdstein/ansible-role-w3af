@@ -1,4 +1,21 @@
 ---
+
+- name: Add w3af_path bin directory to global $PATH.
+  template:
+    src: w3af.sh.j2
+    dest: /etc/profile.d/w3af.sh
+    mode: 0644
+  when: w3af_add_to_path
+
+- name: Make w3af config directory in home directory.
+  file: path=~/.w3af state=directory
+
+- name: Add startup.conf to home directory.
+  template:
+    src: startup.conf.j2
+    dest: ~/.w3af/startup.conf
+    mode: 0644
+
 - name: Clone W3AF into W3AF path.
   git:
     repo: https://github.com/andresriancho/w3af.git
@@ -22,15 +39,23 @@
   stat: "path={{ w3af_path }}"
   register: w3af_bin
 
-- name: Set w3af_console_executable variable to a default if not defined.
-  set_fact:
-    w3af_console_executable: w3af_console
-  when: w3af_console_executable is not defined
-
-- name: Install W3AF tool.
+- name: Install W3AF dependencies (1 of 2).
   shell: >
-    ./{{ w3af_console_executable }}
-    . /tmp/w3af_dependency_install.sh
+    apt-get -y install python-pip python-setuptools
+  when: w3af_load_dependencies
+
+- name: Install W3AF dependencies (2 of 2).
+  shell: >
+    pip install clamd==1.0.1 PyGithub==1.21.0 GitPython==0.3.2.RC1 pybloomfiltermmap==0.3.11
+    esmre==0.3.1 phply==0.9.1 stopit==1.1.0 nltk==3.0.1 chardet==2.1.1 tblib==0.2.0 pdfminer==20140328
+    futures==2.1.5 pyOpenSSL==0.13.1 ndg-httpsclient==0.3.3 pyasn1==0.1.3 lxml==2.3.2 scapy-real==2.2.0-dev
+    guess-language==0.2 cluster==1.1.1b3 msgpack-python==0.4.4 python-ntlm==1.0.1 halberd==0.2.4
+    darts.util.lru==0.5 Jinja2==2.7.3 vulndb==0.0.17 markdown==2.6.1
+  when: w3af_load_dependencies
+
+- name: Install W3AF.
+  shell: >
+    ./{{ w3af_console_executable }} -v
     chdir={{ w3af_install_path }}
   when: w3af_clone.changed
 

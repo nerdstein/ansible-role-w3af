@@ -4,6 +4,10 @@
 
 Installs W3AF, a web security scanning tool, on any Linux or UNIX system.
 
+By using this Ansible Role, you are automatically accepting W3AF's disclaimer for use.
+
+This enables W3AF's console.
+
 ## Requirements
 
 `git` should be installed and working.
