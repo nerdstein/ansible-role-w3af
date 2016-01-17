@@ -27,7 +27,7 @@
     w3af_console_executable: w3af_console
   when: w3af_console_executable is not defined
 
-- name: Install W3AF.
+- name: Install W3AF tool.
   shell: >
     ./{{ w3af_console_executable }}
     . /tmp/w3af_dependency_install.sh
