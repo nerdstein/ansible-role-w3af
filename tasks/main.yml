@@ -1,0 +1,41 @@
+---
+- name: Clone W3AF into W3AF path.
+  git:
+    repo: https://github.com/andresriancho/w3af.git
+    dest: "{{ w3af_install_path }}"
+    version: "{{ w3af_version }}"
+    update: "{{ w3af_keep_updated }}"
+    force: "{{ w3af_force_update }}"
+  register: w3af_clone
+
+- name: Set pip_executable variable to a default if not defined.
+  set_fact:
+    pip_executable: pip
+  when: pip_executable is not defined
+
+- name: Set git_executable variable to a default if not defined.
+  set_fact:
+    git_executable: git
+  when: git_executable is not defined
+
+- name: Check if W3AF is installed.
+  stat: "path={{ w3af_path }}"
+  register: w3af_bin
+
+- name: Set w3af_console_executable variable to a default if not defined.
+  set_fact:
+    w3af_console_executable: w3af_console
+  when: w3af_console_executable is not defined
+
+- name: Install W3AF.
+  shell: >
+    ./{{ w3af_console_executable }}
+    . /tmp/w3af_dependency_install.sh
+    chdir={{ w3af_install_path }}
+  when: w3af_clone.changed
+
+- name: Create w3af symlink.
+  file:
+    src: "{{ w3af_install_path }}/{{ w3af_console_executable }}"
+    dest: "{{ w3af_path }}"
+    state: link

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  vars:
+    composer_global_packages:
+      - { name: phpunit/phpunit, release: "@stable" }
+
+  roles:
+    - geerlingguy.git
+    - Stouts.python
+    - ansible-role-w3af

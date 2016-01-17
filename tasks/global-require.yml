@@ -1,0 +1,7 @@
+---
+- name: Add w3af_path bin directory to global $PATH.
+  template:
+    src: w3af.sh.j2
+    dest: /etc/profile.d/w3af.sh
+    mode: 0644
+  when: w3af_add_to_path
