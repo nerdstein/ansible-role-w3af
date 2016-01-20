@@ -4,5 +4,5 @@
 
   roles:
     - geerlingguy.git
-    - Stouts.python
+#    - Stouts.python
     - ansible-role-w3af

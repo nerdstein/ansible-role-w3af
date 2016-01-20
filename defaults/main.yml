@@ -1,7 +1,9 @@
 ---
 w3af_install_path: /usr/local/share/w3af
-w3af_path: /usr/local/bin/w3af
+w3af_console_executable: w3af_console
+w3af_path: /usr/local/bin/w3af_console
 w3af_version: 1.6.49
 w3af_keep_updated: no
 w3af_force_update: no
 w3af_add_to_path: true
+w3af_load_dependencies: true

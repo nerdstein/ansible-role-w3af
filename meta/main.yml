@@ -1,7 +1,9 @@
 ---
 dependencies:
   - geerlingguy.git
-  - Stouts.python
+  # I thought we might have needed this package for pip, but ansible is python based and
+  #   usually installed with pip. I'm going to leave it out!
+  # - Stouts.python
 
 galaxy_info:
   author: nerdstein
