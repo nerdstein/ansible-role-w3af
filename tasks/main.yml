@@ -39,12 +39,15 @@
   stat: "path={{ w3af_path }}"
   register: w3af_bin
 
-- name: Install W3AF dependencies (1 of 2).
-  shell: >
-    apt-get -y install python-pip python-setuptools
+- name: Install W3AF dependencies (1 of 3).
+  apt: name=python-pip state=present
   when: w3af_load_dependencies
 
-- name: Install W3AF dependencies (2 of 2).
+- name: Install W3AF dependencies (2 of 3).
+  apt: name=python-setuptools state=present
+  when: w3af_load_dependencies
+
+- name: Install W3AF dependencies (3 of 3).
   shell: >
     pip install clamd==1.0.1 PyGithub==1.21.0 GitPython==0.3.2.RC1 pybloomfiltermmap==0.3.11
     esmre==0.3.1 phply==0.9.1 stopit==1.1.0 nltk==3.0.1 chardet==2.1.1 tblib==0.2.0 pdfminer==20140328
